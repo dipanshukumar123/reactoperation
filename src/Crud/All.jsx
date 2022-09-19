@@ -25,9 +25,19 @@ const All = () => {
         cont.GetPro();  
     },[])
 
+    const token = localStorage.getItem('api_token');
+
     function Delete(id){
-        fetch(`http://localhost/apitest/public/api/deleteproduct/${id}`,{
-            method:"DELETE"
+       var myHeaders = new Headers();
+       myHeaders.append("Authorization", `Bearer ${token}`);
+
+        var requestOptions = {
+        method: 'DELETE',
+        headers: myHeaders,
+        redirect: 'follow'
+        };
+        fetch(`http://localhost/apitest/public/api/deleteproduct/${id}`,requestOptions,{
+            method:"DELETE",
         }).then((resp)=>{
             resp.json().then((result)=>{
                 cont.GetPro();
@@ -44,7 +54,7 @@ const All = () => {
 
     const Status = async(id)=>{
         var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", `Bearer ${token}`);
 
         var raw = "// {\r\n//     \"status\" : \"Active\"\r\n// }";
 
