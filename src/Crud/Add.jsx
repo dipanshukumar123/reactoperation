@@ -14,9 +14,11 @@ const Add = () => {
   const [desc, setdesc] = useState("");
 
   let navigate = useNavigate();
-
+  const token = localStorage.getItem('api_token')
   const AddUser = (e) => {
     e.preventDefault();
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${token}`);
     var formdata = new FormData();
     formdata.append("product_name", name);
     formdata.append("product_title", title);
@@ -25,7 +27,9 @@ const Add = () => {
 
     var requestOptions = {
       method: "POST",
+      headers: myHeaders,
       body: formdata,
+      redirect: 'follow'
     };
 
     if (name == "") {
@@ -52,7 +56,7 @@ const Add = () => {
           toast(result.msg);
           navigate("/all");
           setname("");
-          setimage("");
+          // setimage("");
           settitle("");
           setdesc("");
         } else {
