@@ -1,0 +1,14 @@
+.Prev{
+    margin-left: 100px;
+    margin-bottom: 20px;
+    background-color:aqua;
+}
+.Next{
+    margin-right: 100px;
+    margin-bottom: 20px;
+    background-color:aqua;
+}
+.Page_style{
+    display: flex;
+    justify-content: center;
+}

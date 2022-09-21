@@ -9,7 +9,9 @@ import {context} from "../App";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
-import Pagination from "../Pagination";
+import Page from "./Page_Pagination";
+// import Pagination from "../pagination";
+// import data from './data/mock-data.json';
 
 
 
@@ -71,10 +73,19 @@ const All = () => {
         toast(result.msg);
     }
 
+    const [showperpage,setshowperpage] = useState(3)
+    const [PerPage,setperPage] = useState({
+        start : 0,
+        end : showperpage
+    });
+
+    const onpaginationchange = (start,end) => {
+        setperPage({start:start,end:end})
+    }
+
     // const [currentPage, setCurrentPage] = useState(1);
-    //
-    // const currentTableData = useMemo(() => {
-    //     let PageSize = 4, data;
+    // let PageSize = 3;
+    // const ApiList = useMemo(() => {
     //     const firstPageIndex = (currentPage - 1) * PageSize;
     //     const lastPageIndex = firstPageIndex + PageSize;
     //     return data.slice(firstPageIndex, lastPageIndex);
@@ -104,18 +115,18 @@ const All = () => {
                   </thead>
                   <tbody>
                   {
-                    cont.ApiList.filter(item => {
+                    cont.ApiList.slice(PerPage.start,PerPage.end).filter(item => {
                         if (query === '') {
                           return item;
                         } else if (item.product_name.toLowerCase().includes(query.toLowerCase())) {
                           return item;
                         }
                       })
-                      .map((item,index)=>{
+                        .map((item,index)=>{
                           return(
                               <>
                                   <tr key = {index}>
-                                      <th scope="row">{index+1}</th>
+                                      <th scope="row">{item.id}</th>
                                       <td>{item.product_name}</td>
                                       <td><img src={item.product_image}  height={80} width={80}/></td>
                                       <td>{item.product_title}</td>
@@ -131,11 +142,20 @@ const All = () => {
                                   </tr>
                               </>
                           )
-                      })
-                  }
+                        })
+                    }
                   </tbody>
               </table>
           </div>
+
+          <Page showperpage={showperpage} onpaginationchange={onpaginationchange} total={cont.ApiList.length} />
+          {/* <Pagination
+        className="pagination-bar"
+        currentPage={currentPage}
+        totalCount={data.length}
+        pageSize={PageSize}
+        onPageChange={page => setCurrentPage(page)} */}
+      {/* /> */}
 
       </>
   )

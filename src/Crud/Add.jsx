@@ -12,6 +12,7 @@ const Add = () => {
   const [image, setimage] = useState("");
   const [title, settitle] = useState("");
   const [desc, setdesc] = useState("");
+  const [error, setError] = useState({product_name : "" , product_title : "" , product_desc : "" , product_image : ""})
 
   let navigate = useNavigate();
   const token = localStorage.getItem('api_token')
@@ -32,20 +33,21 @@ const Add = () => {
       redirect: 'follow'
     };
 
-    if (name == "") {
-      document.getElementById("error").innerHTML = "Name field required";
+    if (image == "") {
+      document.getElementById("error").innerHTML = "Product Image is required";
       document.getElementById("error").style.color = "red";
-      document.getElementById("error").style.textTransform = "uppercase";
-    } else if (image == "") {
-      document.getElementById("error").innerHTML = "Image field required";
-      document.getElementById("error").style.color = "red";
-    } else if (title == "") {
-      document.getElementById("error").innerHTML = "Title field required";
-      document.getElementById("error").style.color = "red";
-    } else if (desc == "") {
-      document.getElementById("error").innerHTML = "Description field required";
-      document.getElementById("error").style.color = "red";
-    }
+      // document.getElementById("error").style.textTransform = "uppercase";
+    } 
+    // else if (image == "") {
+    //   document.getElementById("error").innerHTML = "Image field required";
+    //   document.getElementById("error").style.color = "red";
+    // } else if (title == "") {
+    //   document.getElementById("error").innerHTML = "Title field required";
+    //   document.getElementById("error").style.color = "red";
+    // } else if (desc == "") {
+    //   document.getElementById("error").innerHTML = "Description field required";
+    //   document.getElementById("error").style.color = "red";
+    // }
 
     fetch(
       "http://localhost/apitest/public/api/saveproduct",
@@ -60,17 +62,19 @@ const Add = () => {
           settitle("");
           setdesc("");
         } else {
-          const errors = result.error;
-          console.log(Array.isArray(errors));
+          setError(result.error) 
         }
       });
     });
     cont.GetPro();
   };
+  const error_style = {
+    color : "red"
+  }
 
   return (
     <>
-      <div id="error" style={{ marginLeft: 600 }}></div>
+      {/* <div id="error" style={{ marginLeft: 600 }}></div> */}
       <div className="table-container">
         <NavLink to="/all">
           <Button type="button" className="btn btn-primary btn-sm">
@@ -91,6 +95,7 @@ const Add = () => {
               placeholder="Enter Name"
               style={{ maxWidth: 500 }}
             />
+            <span style={error_style}>{error.product_name}</span>
           </div>
           <div className="form-group">
             <label htmlFor="exampleInputPassword1">Image</label>
@@ -103,6 +108,7 @@ const Add = () => {
               name="product_image"
               style={{ maxWidth: 500 }}
             />
+            <span id="error"></span>
           </div>
           <div className="form-group">
             <label htmlFor="exampleInputPassword1">Title</label>
@@ -117,6 +123,7 @@ const Add = () => {
               placeholder="Title"
               style={{ maxWidth: 500 }}
             />
+            <span style={error_style}>{error.product_title}</span>
           </div>
           <div className="form-group">
             <label htmlFor="exampleInputPassword1">Description</label>
@@ -131,6 +138,7 @@ const Add = () => {
               placeholder="Description"
               style={{ maxWidth: 500 }}
             />
+            <span style={error_style}>{error.product_desc}</span>
           </div>
           <button type="submit" className="btn btn-primary">
             Submit
