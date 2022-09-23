@@ -81,6 +81,7 @@ const All = () => {
 
     const onpaginationchange = (start,end) => {
         setperPage({start:start,end:end})
+        console.log(start,end);
     }
 
     // const [currentPage, setCurrentPage] = useState(1);
